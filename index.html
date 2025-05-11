@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Girish's Tool - Your Ultimate Digital Toolkit</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Reset and Basic Styles */
         * {
@@ -18,10 +20,12 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
-            color: #212121; /* Dark Gray for text */
-            background-color: #f5f5f5; /* Light Gray background */
+            color: #e0e0e0;
+            background-color: #12121f; /* Deep dark blue/purple */
+            overflow-x: hidden;
+            position: relative;
         }
 
         .container {
@@ -29,27 +33,47 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Material Design Elevation (Shadows) */
-        .z-depth-1 { box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2); }
-        .z-depth-1-hover:hover { box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2); }
-        .z-depth-2 { box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2); }
+        /* Particle Canvas Styling for Hero */
+        #hero-particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Eye-Catchy Colors */
+        :root {
+            --primary-glow: #00f2ff; /* Electric Blue */
+            --secondary-glow: #ff00c8; /* Vibrant Pink */
+            --accent-glow: #aeff00; /* Neon Green/Yellow */
+            --dark-bg: #12121f;
+            --card-bg: rgba(25, 25, 45, 0.8);
+            --text-light: #f0f5f9;
+            --text-medium: #c9d6df;
+            /* RGB versions for rgba() */
+            --primary-glow-rgb: 0, 242, 255;
+            --secondary-glow-rgb: 255, 0, 200;
+            --accent-glow-rgb: 174, 255, 0;
+        }
 
         /* Header */
         header {
-            background-color: #3F51B5; /* Indigo - Material Primary */
-            color: #FFFFFF;
-            padding: 16px 0;
+            background: rgba(18, 18, 31, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(var(--primary-glow-rgb), 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(var(--primary-glow-rgb), 0.2);
         }
-        /* Add shadow to header by wrapping its content or applying to header itself */
-        header.z-depth-1 {
-             box-shadow: 0 2px 4px rgba(0,0,0,0.24); /* Custom shadow for header for better look */
-        }
-
 
         header .container {
             display: flex;
@@ -58,225 +82,259 @@
         }
 
         .logo {
-            font-size: 1.8em; /* Adjusted from 1.5em in prompt, 2.2em in funky */
-            font-weight: 500; /* Medium weight */
-            letter-spacing: 0.5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px var(--primary-glow), 0 0 10px var(--primary-glow);
+            color: var(--text-light);
         }
-        /* Removed span for 'Tool', keeping it simple */
+        .logo span {
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
 
         /* Hero Section */
         #hero {
-            background-color: #E8EAF6; /* Indigo Lighten-4 - Lighter shade for contrast */
-            color: #3F51B5; /* Primary color for text */
-            padding: 80px 0;
+            position: relative;
+            color: var(--text-light);
+            padding: 100px 0;
             text-align: center;
-            min-height: 50vh; /* Reduced height for a more content-focused feel */
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            background: var(--dark-bg);
+        }
+
+        #hero .container {
+             position: relative; z-index: 1;
         }
 
         #hero h1 {
-            font-size: 2.8em;
-            margin-bottom: 16px;
-            font-weight: 400; /* Regular weight */
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.3;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow), var(--accent-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            animation: textShine 5s infinite linear;
+            background-size: 200% auto;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
         }
 
         #hero p {
-            font-size: 1.2em;
-            margin-bottom: 32px;
+            font-size: 1.3em;
+            margin-bottom: 35px;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            color: #5C6BC0; /* Indigo Lighten-1 */
+            color: var(--text-medium);
             font-weight: 300;
         }
 
         .cta-button {
             display: inline-block;
-            background-color: #FF5722; /* Deep Orange - Material Accent */
-            color: #FFFFFF;
-            padding: 12px 28px;
-            font-size: 1.05em;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: #0a0a14;
+            padding: 16px 32px;
+            font-size: 1.1em;
             text-decoration: none;
-            border-radius: 4px; /* Standard Material button radius */
-            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
-            font-weight: 500;
-            text-transform: uppercase; /* Material buttons often uppercase */
-            letter-spacing: 0.5px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(var(--primary-glow-rgb), 0.4),
+                        0 0 15px rgba(var(--secondary-glow-rgb), 0.3);
             border: none;
-            position: relative; /* For ripple */
-            overflow: hidden; /* To contain ripple */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
-        .cta-button.z-depth-1 {
-            /* Already applied for hover through z-depth-1-hover */
-        }
-
-
-        .cta-button:hover {
-            background-color: #F4511E; /* Darker Deep Orange */
-            /* Shadow is handled by z-depth-1-hover if applied, or can be custom */
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.18), 0 3px 3px -2px rgba(0,0,0,0.15), 0 1px 8px 0 rgba(0,0,0,0.22);
-        }
-        .cta-button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14), 0 1px 1px -2px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.2);
-        }
-
-
-        /* Ripple Effect (Simple CSS version) */
-        .ripple {
+        .cta-button::before {
+            content: "";
             position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.4);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none; /* Important */
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease-out;
         }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 25px rgba(var(--primary-glow-rgb), 0.6),
+                        0 0 25px rgba(var(--secondary-glow-rgb), 0.5);
         }
-
+        .cta-button:hover::before { left: 120%; }
 
         /* Tools Grid Section */
         #tools-grid {
-            padding: 60px 0;
+            padding: 70px 0;
+            position: relative;
+            z-index: 1;
         }
 
         #tools-grid h2 {
             text-align: center;
-            font-size: 2.2em;
-            margin-bottom: 40px;
-            color: #3F51B5; /* Primary color */
-            font-weight: 400;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.6em;
+            margin-bottom: 45px;
+            color: var(--primary-glow);
+            text-shadow: 0 0 8px rgba(var(--primary-glow-rgb), 0.5);
         }
 
         .tools-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px; /* Material grid gap */
+            gap: 30px;
         }
 
         .tool-card {
-            background-color: #FFFFFF; /* White card background */
-            border-radius: 4px;
-            padding: 24px;
-            text-align: left; /* Material cards often have left-aligned content */
+            background: var(--card-bg);
+            border: 1px solid transparent;
+            border-image: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)) 1;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
             text-decoration: none;
-            color: #212121;
-            transition: box-shadow 0.3s ease;
+            color: var(--text-medium);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             display: flex;
-            flex-direction: column;
-            justify-content: center; /* Vertically center if content is short */
-            min-height: 120px;
-            position: relative; /* For ripple */
-            overflow: hidden; /* To contain ripple */
+            flex-direction: column; /* Changed to column for icon on top */
+            align-items: center; /* Center icon and text */
+            justify-content: center;
+            min-height: 160px; /* Increased min-height for icon */
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(3px);
+        }
+
+        .tool-card .tool-icon {
+            font-size: 2.5em; /* Icon size */
+            margin-bottom: 15px;
+            color: var(--primary-glow); /* Default icon color */
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .tool-card h3 {
-            font-size: 1.15em; /* Slightly larger for titles */
-            margin-bottom: 8px;
-            color: #3F51B5; /* Primary color for title */
-            font-weight: 500;
-        }
-        /* Optional: Add a short description to cards */
-        .tool-card p.description {
-            font-size: 0.9em;
-            color: #757575; /* Medium gray for secondary text */
-            line-height: 1.4;
+            font-size: 1.15em; /* Adjusted size for better balance with icon */
+            color: var(--text-light);
+            font-weight: 600;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            margin-top: 0; /* Remove default margin if any */
         }
 
+        .tool-card::before, .tool-card::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-glow);
+            transition: width 0.3s ease-out;
+        }
+        .tool-card::before { top: 0; left: 50%; transform: translateX(-50%); }
+        .tool-card::after { bottom: 0; right: 50%; transform: translateX(50%); }
+
+        .tool-card:hover {
+            transform: translateY(-8px) perspective(1000px) rotateX(3deg) rotateY(-3deg);
+            box-shadow: 0 10px 30px rgba(var(--primary-glow-rgb), 0.2),
+                        0 0 20px rgba(var(--secondary-glow-rgb), 0.15);
+            border-image: linear-gradient(45deg, var(--secondary-glow), var(--primary-glow)) 1;
+        }
+        .tool-card:hover .tool-icon {
+            color: var(--accent-glow);
+            transform: scale(1.1) rotate(-5deg); /* Funky icon hover */
+        }
+        .tool-card:hover h3 {
+            color: var(--accent-glow);
+            text-shadow: 0 0 5px rgba(var(--accent-glow-rgb), 0.7);
+        }
+        .tool-card:hover::before, .tool-card:hover::after {
+            width: 60%;
+        }
 
         /* Footer */
         footer {
-            background-color: #FFFFFF; /* White footer for light theme */
-            color: #757575; /* Medium gray text */
+            background: rgba(18, 18, 31, 0.85);
+            color: var(--text-medium);
             text-align: center;
-            padding: 24px 0;
+            padding: 25px 0;
             margin-top: 40px;
-            border-top: 1px solid #e0e0e0; /* Subtle top border */
+            border-top: 1px solid rgba(var(--primary-glow-rgb), 0.2);
+            position: relative;
+            z-index: 1;
         }
-        footer p {
-            font-weight: 400;
-        }
+        footer p { font-weight: 300; }
 
         /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            #hero h1 { font-size: 2.8em; }
+            .tools-container { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+            .tool-card .tool-icon { font-size: 2.2em; margin-bottom: 12px; }
+            .tool-card h3 { font-size: 1.1em; }
+        }
+
         @media (max-width: 768px) {
-            #hero h1 {
-                font-size: 2.2em;
-            }
-            #hero p {
-                font-size: 1.1em;
-            }
-            .logo {
-                font-size: 1.5em;
-            }
-            #tools-grid h2 {
-                font-size: 1.8em;
-            }
+            #hero h1 { font-size: 2.4em; }
+            #hero p { font-size: 1.15em; }
+            .logo { font-size: 1.8em; }
+            #tools-grid h2 { font-size: 2.2em; }
+            .tool-card .tool-icon { font-size: 2em; }
         }
 
         @media (max-width: 480px) {
-            #hero {
-                padding: 60px 0;
-            }
-            #hero h1 {
-                font-size: 1.8em;
-            }
-            #hero p {
-                font-size: 1em;
-            }
-            .tools-container {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .logo {
-                font-size: 1.3em;
-            }
-             header .container {
-                /* flex-direction: column; Allow logo to stay on left */
-                /* gap: 5px; */
-            }
-            .cta-button {
-                padding: 10px 20px;
-                font-size: 1em;
-            }
-            .tool-card {
-                padding: 20px;
-            }
+            #hero { padding: 80px 0; min-height: 60vh; }
+            #hero h1 { font-size: 2em; }
+            #hero p { font-size: 1em; }
+            .tools-container { grid-template-columns: 1fr; }
+            .logo { font-size: 1.6em; }
+            header .container { flex-direction: column; gap: 10px; }
+            .cta-button { padding: 14px 28px; font-size: 1em; }
+            #tools-grid h2 { font-size: 1.8em; }
+            .tool-card { padding: 20px; min-height: 150px; }
+            .tool-card .tool-icon { font-size: 1.8em; margin-bottom: 10px; }
+            .tool-card h3 { font-size: 1em; }
         }
     </style>
 </head>
 <body>
-
     <!-- Header -->
-    <header class="z-depth-1">
+    <header>
         <div class="container">
-            <div class="logo">Girish's Tool</div>
-            <!-- Navigation can be added here if needed -->
+            <div class="logo">Girish's <span>Tool</span></div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section id="hero">
+        <div id="hero-particles-js"></div>
         <div class="container">
             <h1>Girish's Tool: Your Ultimate Digital Toolkit</h1>
-            <p>Simplify your daily digital tasks with Girish's collection of handy online utilities. Quick, easy, and efficient.</p>
-            <a href="#tools-grid" class="cta-button z-depth-1 z-depth-1-hover" id="explore-tools-btn">Explore Tools</a>
+            <p>Simplify your tasks with Girish's Online Utilities. Fast, funky, and free to use!</p>
+            <a href="#tools-grid" class="cta-button" id="explore-tools-btn">Explore Tools</a>
         </div>
     </section>
 
     <!-- Tools Grid Section -->
     <section id="tools-grid">
         <div class="container">
-            <h2>Our Tools</h2>
+            <h2>Our Awesome Tools</h2>
             <div class="tools-container">
-                <!-- Tool items will be dynamically inserted here by JavaScript -->
+                <!-- Tool items will be dynamically inserted here -->
             </div>
         </div>
     </section>
@@ -284,16 +342,17 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; <span id="current-year"></span> Girish's Tool. All rights reserved.</p>
+            <p>© <span id="current-year"></span> Girish's Tool. All rights reserved. Stay Funky!</p>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
+        // No need for hexToRgb as RGB values are directly in CSS vars now.
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scroll for "Explore Tools" button
             const exploreButton = document.getElementById('explore-tools-btn');
             const toolsSection = document.getElementById('tools-grid');
-
             if (exploreButton && toolsSection) {
                 exploreButton.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -301,34 +360,31 @@
                 });
             }
 
-            // Set current year in footer
             const yearSpan = document.getElementById('current-year');
-            if (yearSpan) {
-                yearSpan.textContent = new Date().getFullYear();
-            }
+            if (yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
-            // Tool data
+            // Tool data with Font Awesome icons
             const tools = [
-                { name: 'Loan EMI Calculator', href: 'Loan-EMI-Calculator.html', description: 'Calculate your Equated Monthly Installments for loans.' },
-                { name: 'Video Transcript Generator', href: 'Video-Transcript-Generator.html', description: 'Automatically generate transcripts from video files.' },
-                { name: '7th CPC Pay Calculator', href: '7th-CPC-Pay-Calculator.html', description: 'Calculate pay based on the 7th Central Pay Commission.' },
-                { name: 'TNEB Bill Calculator', href: 'TNEB-Bill-Calculator.html', description: 'Estimate your Tamil Nadu Electricity Board bill.' },
-                { name: 'MS Plate Weight Calculator', href: 'MS-Plate-Weight-Calculator.html', description: 'Calculate the weight of Mild Steel plates.' },
-                { name: 'LIC Surrender Value Calculator', href: 'LIC-Surrender-Value-Calculator.html', description: 'Estimate the surrender value of your LIC policy.' },
-                { name: 'SGPA Calculator', href: 'sgpa-calculator.html', description: 'Calculate your Semester Grade Point Average.' },
-                { name: 'Lo Shu Grid Calculator', href: 'lo-shu-grid-calculator.html', description: 'Generate and analyze Lo Shu Grid numerology.' },
-                { name: 'VIT CGPA Calculator', href: 'vit-cgpa-calculator.html', description: 'Calculate CGPA for Vellore Institute of Technology.' },
-                { name: 'SRM CGPA Calculator', href: 'srm-cgpa-calculator.html', description: 'Calculate CGPA for SRM Institute of Science and Technology.' },
-                { name: 'SRM GPA Calculator', href: 'srm-gpa-calculator.html', description: 'Calculate GPA for SRM Institute of Science and Technology.' },
-                { name: 'Unit Converter', href: 'unit-converter.html', description: 'Convert various units of measurement.' },
-                { name: 'Time Zone Converter', href: 'time-zone-converter.html', description: 'Convert times between different time zones.' },
-                { name: 'Random Password Generator', href: 'random-password-generator.html', description: 'Create strong, random passwords.' },
-                { name: 'QR Code Generator', href: 'qr-code-generator.html', description: 'Generate QR codes for URLs, text, and more.' },
-                { name: 'Word & Character Counter', href: 'word-counter-character-counter.html', description: 'Count words and characters in your text.' },
-                { name: 'Image Converter, Resizer & Compressor', href: 'image-converter-resizer-and-compressor.html', description: 'Modify image formats, dimensions, and file sizes.' },
-                { name: 'Color Picker & Converter', href: 'color-picker-converter.html', description: 'Pick colors and convert between color formats.' },
-                { name: 'Code Compiler', href: 'Code-Compiler.html', description: 'Compile and run code in various programming languages.' },
-                { name: 'HTML Viewer', href: 'HTML-Viewer.html', description: 'View the rendered output of HTML code.' }
+                { name: 'Loan EMI Calculator', href: 'Loan-EMI-Calculator.html', icon: 'fas fa-calculator' },
+                { name: 'Video Transcript Generator', href: 'Video-Transcript-Generator.html', icon: 'fas fa-closed-captioning' },
+                { name: '7th CPC Pay Calculator', href: '7th-CPC-Pay-Calculator.html', icon: 'fas fa-rupee-sign' },
+                { name: 'TNEB Bill Calculator', href: 'TNEB-Bill-Calculator.html', icon: 'fas fa-bolt' },
+                { name: 'MS Plate Weight Calculator', href: 'MS-Plate-Weight-Calculator.html', icon: 'fas fa-weight-hanging' },
+                { name: 'LIC Surrender Value Calculator', href: 'LIC-Surrender-Value-Calculator.html', icon: 'fas fa-hand-holding-usd' },
+                { name: 'SGPA Calculator', href: 'sgpa-calculator.html', icon: 'fas fa-graduation-cap' },
+                { name: 'Lo Shu Grid Calculator', href: 'lo-shu-grid-calculator.html', icon: 'fas fa-th' }, // Generic grid
+                { name: 'VIT CGPA Calculator', href: 'vit-cgpa-calculator.html', icon: 'fas fa-university' },
+                { name: 'SRM CGPA Calculator', href: 'srm-cgpa-calculator.html', icon: 'fas fa-school' },
+                { name: 'SRM GPA Calculator', href: 'srm-gpa-calculator.html', icon: 'fas fa-book-reader' },
+                { name: 'Unit Converter', href: 'unit-converter.html', icon: 'fas fa-exchange-alt' },
+                { name: 'Time Zone Converter', href: 'time-zone-converter.html', icon: 'fas fa-globe-americas' },
+                { name: 'Random Password Generator', href: 'random-password-generator.html', icon: 'fas fa-key' },
+                { name: 'QR Code Generator', href: 'qr-code-generator.html', icon: 'fas fa-qrcode' },
+                { name: 'Word & Character Counter', href: 'word-counter-character-counter.html', icon: 'fas fa-file-word' },
+                { name: 'Image Converter, Resizer & Compressor', href: 'image-converter-resizer-and-compressor.html', icon: 'fas fa-image' },
+                { name: 'Color Picker & Converter', href: 'color-picker-converter.html', icon: 'fas fa-palette' },
+                { name: 'Code Compiler', href: 'Code-Compiler.html', icon: 'fas fa-code' },
+                { name: 'HTML Viewer', href: 'HTML-Viewer.html', icon: 'fab fa-html5' }
             ];
 
             const toolsContainer = document.querySelector('.tools-container');
@@ -336,53 +392,48 @@
                 tools.forEach(tool => {
                     const toolCard = document.createElement('a');
                     toolCard.href = tool.href;
-                    toolCard.classList.add('tool-card', 'z-depth-1', 'z-depth-1-hover'); // Add shadow classes
+                    toolCard.classList.add('tool-card');
                     
+                    // Create and add icon
+                    if (tool.icon) {
+                        const iconElement = document.createElement('i');
+                        iconElement.className = `tool-icon ${tool.icon}`; // Add base class and specific icon class
+                        toolCard.appendChild(iconElement);
+                    }
+
                     const toolName = document.createElement('h3');
                     toolName.textContent = tool.name;
-                    toolCard.appendChild(toolName);
-
-                    if(tool.description) {
-                        const toolDescription = document.createElement('p');
-                        toolDescription.classList.add('description');
-                        toolDescription.textContent = tool.description;
-                        toolCard.appendChild(toolDescription);
-                    }
                     
+                    toolCard.appendChild(toolName);
                     toolsContainer.appendChild(toolCard);
                 });
             }
 
-            // Simple Ripple Effect for Material-like interaction
-            function createRipple(event) {
-                const button = event.currentTarget;
-                // Remove any existing ripples
-                const existingRipple = button.querySelector(".ripple");
-                if (existingRipple) {
-                    existingRipple.remove();
-                }
-
-                const circle = document.createElement("span");
-                const diameter = Math.max(button.clientWidth, button.clientHeight);
-                const radius = diameter / 2;
-
-                circle.style.width = circle.style.height = `${diameter}px`;
-                // Get position of click relative to the button
-                const rect = button.getBoundingClientRect();
-                circle.style.left = `${event.clientX - rect.left - radius}px`;
-                circle.style.top = `${event.clientY - rect.top - radius}px`;
-                circle.classList.add("ripple");
-
-                button.appendChild(circle);
+            if (document.getElementById('hero-particles-js') && typeof particlesJS !== 'undefined') {
+                particlesJS('hero-particles-js', {
+                    "particles": {
+                        "number": {"value": 80, "density": {"enable": true, "value_area": 800}},
+                        "color": {"value": ["#00f2ff", "#ff00c8", "#aeff00"]},
+                        "shape": {"type": "circle"},
+                        "opacity": {"value": 0.6, "random": true, "anim": {"enable": true, "speed": 0.8, "opacity_min": 0.2, "sync": false}},
+                        "size": {"value": 3, "random": true},
+                        "line_linked": {"enable": true, "distance": 120, "color": "#ffffff", "opacity": 0.25, "width": 1},
+                        "move": {"enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out"}
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "push"}, "resize": true},
+                        "modes": {
+                            "grab": {"distance": 140, "line_linked": {"opacity": 0.7}},
+                            "push": {"particles_nb": 4}
+                        }
+                    },
+                    "retina_detect": true
+                });
+            } else {
+                console.warn("Particles.js library not loaded or hero-particles-js element not found.");
             }
-
-            const buttonsAndCards = document.querySelectorAll('.cta-button, .tool-card');
-            buttonsAndCards.forEach(item => {
-                item.addEventListener('click', createRipple);
-            });
-
         });
     </script>
-
 </body>
 </html>
