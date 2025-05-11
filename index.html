@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Girish's Tool - Your Ultimate Digital Toolkit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Basic Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #212121; /* Dark Gray for text */
+            background-color: #f5f5f5; /* Light Gray background */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Material Design Elevation (Shadows) */
+        .z-depth-1 { box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2); }
+        .z-depth-1-hover:hover { box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2); }
+        .z-depth-2 { box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2); }
+
+        /* Header */
+        header {
+            background-color: #3F51B5; /* Indigo - Material Primary */
+            color: #FFFFFF;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        /* Add shadow to header by wrapping its content or applying to header itself */
+        header.z-depth-1 {
+             box-shadow: 0 2px 4px rgba(0,0,0,0.24); /* Custom shadow for header for better look */
+        }
+
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em; /* Adjusted from 1.5em in prompt, 2.2em in funky */
+            font-weight: 500; /* Medium weight */
+            letter-spacing: 0.5px;
+        }
+        /* Removed span for 'Tool', keeping it simple */
+
+        /* Hero Section */
+        #hero {
+            background-color: #E8EAF6; /* Indigo Lighten-4 - Lighter shade for contrast */
+            color: #3F51B5; /* Primary color for text */
+            padding: 80px 0;
+            text-align: center;
+            min-height: 50vh; /* Reduced height for a more content-focused feel */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #hero h1 {
+            font-size: 2.8em;
+            margin-bottom: 16px;
+            font-weight: 400; /* Regular weight */
+        }
+
+        #hero p {
+            font-size: 1.2em;
+            margin-bottom: 32px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #5C6BC0; /* Indigo Lighten-1 */
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #FF5722; /* Deep Orange - Material Accent */
+            color: #FFFFFF;
+            padding: 12px 28px;
+            font-size: 1.05em;
+            text-decoration: none;
+            border-radius: 4px; /* Standard Material button radius */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+            font-weight: 500;
+            text-transform: uppercase; /* Material buttons often uppercase */
+            letter-spacing: 0.5px;
+            border: none;
+            position: relative; /* For ripple */
+            overflow: hidden; /* To contain ripple */
+        }
+        .cta-button.z-depth-1 {
+            /* Already applied for hover through z-depth-1-hover */
+        }
+
+
+        .cta-button:hover {
+            background-color: #F4511E; /* Darker Deep Orange */
+            /* Shadow is handled by z-depth-1-hover if applied, or can be custom */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.18), 0 3px 3px -2px rgba(0,0,0,0.15), 0 1px 8px 0 rgba(0,0,0,0.22);
+        }
+        .cta-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.14), 0 1px 1px -2px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.2);
+        }
+
+
+        /* Ripple Effect (Simple CSS version) */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none; /* Important */
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+
+        /* Tools Grid Section */
+        #tools-grid {
+            padding: 60px 0;
+        }
+
+        #tools-grid h2 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 40px;
+            color: #3F51B5; /* Primary color */
+            font-weight: 400;
+        }
+
+        .tools-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px; /* Material grid gap */
+        }
+
+        .tool-card {
+            background-color: #FFFFFF; /* White card background */
+            border-radius: 4px;
+            padding: 24px;
+            text-align: left; /* Material cards often have left-aligned content */
+            text-decoration: none;
+            color: #212121;
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertically center if content is short */
+            min-height: 120px;
+            position: relative; /* For ripple */
+            overflow: hidden; /* To contain ripple */
+        }
+
+        .tool-card h3 {
+            font-size: 1.15em; /* Slightly larger for titles */
+            margin-bottom: 8px;
+            color: #3F51B5; /* Primary color for title */
+            font-weight: 500;
+        }
+        /* Optional: Add a short description to cards */
+        .tool-card p.description {
+            font-size: 0.9em;
+            color: #757575; /* Medium gray for secondary text */
+            line-height: 1.4;
+        }
+
+
+        /* Footer */
+        footer {
+            background-color: #FFFFFF; /* White footer for light theme */
+            color: #757575; /* Medium gray text */
+            text-align: center;
+            padding: 24px 0;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0; /* Subtle top border */
+        }
+        footer p {
+            font-weight: 400;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2.2em;
+            }
+            #hero p {
+                font-size: 1.1em;
+            }
+            .logo {
+                font-size: 1.5em;
+            }
+            #tools-grid h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #hero {
+                padding: 60px 0;
+            }
+            #hero h1 {
+                font-size: 1.8em;
+            }
+            #hero p {
+                font-size: 1em;
+            }
+            .tools-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .logo {
+                font-size: 1.3em;
+            }
+             header .container {
+                /* flex-direction: column; Allow logo to stay on left */
+                /* gap: 5px; */
+            }
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            .tool-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="z-depth-1">
+        <div class="container">
+            <div class="logo">Girish's Tool</div>
+            <!-- Navigation can be added here if needed -->
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>Girish's Tool: Your Ultimate Digital Toolkit</h1>
+            <p>Simplify your daily digital tasks with Girish's collection of handy online utilities. Quick, easy, and efficient.</p>
+            <a href="#tools-grid" class="cta-button z-depth-1 z-depth-1-hover" id="explore-tools-btn">Explore Tools</a>
+        </div>
+    </section>
+
+    <!-- Tools Grid Section -->
+    <section id="tools-grid">
+        <div class="container">
+            <h2>Our Tools</h2>
+            <div class="tools-container">
+                <!-- Tool items will be dynamically inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Girish's Tool. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for "Explore Tools" button
+            const exploreButton = document.getElementById('explore-tools-btn');
+            const toolsSection = document.getElementById('tools-grid');
+
+            if (exploreButton && toolsSection) {
+                exploreButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    toolsSection.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+
+            // Set current year in footer
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Tool data
+            const tools = [
+                { name: 'Loan EMI Calculator', href: 'Loan-EMI-Calculator.html', description: 'Calculate your Equated Monthly Installments for loans.' },
+                { name: 'Video Transcript Generator', href: 'Video-Transcript-Generator.html', description: 'Automatically generate transcripts from video files.' },
+                { name: '7th CPC Pay Calculator', href: '7th-CPC-Pay-Calculator.html', description: 'Calculate pay based on the 7th Central Pay Commission.' },
+                { name: 'TNEB Bill Calculator', href: 'TNEB-Bill-Calculator.html', description: 'Estimate your Tamil Nadu Electricity Board bill.' },
+                { name: 'MS Plate Weight Calculator', href: 'MS-Plate-Weight-Calculator.html', description: 'Calculate the weight of Mild Steel plates.' },
+                { name: 'LIC Surrender Value Calculator', href: 'LIC-Surrender-Value-Calculator.html', description: 'Estimate the surrender value of your LIC policy.' },
+                { name: 'SGPA Calculator', href: 'sgpa-calculator.html', description: 'Calculate your Semester Grade Point Average.' },
+                { name: 'Lo Shu Grid Calculator', href: 'lo-shu-grid-calculator.html', description: 'Generate and analyze Lo Shu Grid numerology.' },
+                { name: 'VIT CGPA Calculator', href: 'vit-cgpa-calculator.html', description: 'Calculate CGPA for Vellore Institute of Technology.' },
+                { name: 'SRM CGPA Calculator', href: 'srm-cgpa-calculator.html', description: 'Calculate CGPA for SRM Institute of Science and Technology.' },
+                { name: 'SRM GPA Calculator', href: 'srm-gpa-calculator.html', description: 'Calculate GPA for SRM Institute of Science and Technology.' },
+                { name: 'Unit Converter', href: 'unit-converter.html', description: 'Convert various units of measurement.' },
+                { name: 'Time Zone Converter', href: 'time-zone-converter.html', description: 'Convert times between different time zones.' },
+                { name: 'Random Password Generator', href: 'random-password-generator.html', description: 'Create strong, random passwords.' },
+                { name: 'QR Code Generator', href: 'qr-code-generator.html', description: 'Generate QR codes for URLs, text, and more.' },
+                { name: 'Word & Character Counter', href: 'word-counter-character-counter.html', description: 'Count words and characters in your text.' },
+                { name: 'Image Converter, Resizer & Compressor', href: 'image-converter-resizer-and-compressor.html', description: 'Modify image formats, dimensions, and file sizes.' },
+                { name: 'Color Picker & Converter', href: 'color-picker-converter.html', description: 'Pick colors and convert between color formats.' },
+                { name: 'Code Compiler', href: 'Code-Compiler.html', description: 'Compile and run code in various programming languages.' },
+                { name: 'HTML Viewer', href: 'HTML-Viewer.html', description: 'View the rendered output of HTML code.' }
+            ];
+
+            const toolsContainer = document.querySelector('.tools-container');
+            if (toolsContainer) {
+                tools.forEach(tool => {
+                    const toolCard = document.createElement('a');
+                    toolCard.href = tool.href;
+                    toolCard.classList.add('tool-card', 'z-depth-1', 'z-depth-1-hover'); // Add shadow classes
+                    
+                    const toolName = document.createElement('h3');
+                    toolName.textContent = tool.name;
+                    toolCard.appendChild(toolName);
+
+                    if(tool.description) {
+                        const toolDescription = document.createElement('p');
+                        toolDescription.classList.add('description');
+                        toolDescription.textContent = tool.description;
+                        toolCard.appendChild(toolDescription);
+                    }
+                    
+                    toolsContainer.appendChild(toolCard);
+                });
+            }
+
+            // Simple Ripple Effect for Material-like interaction
+            function createRipple(event) {
+                const button = event.currentTarget;
+                // Remove any existing ripples
+                const existingRipple = button.querySelector(".ripple");
+                if (existingRipple) {
+                    existingRipple.remove();
+                }
+
+                const circle = document.createElement("span");
+                const diameter = Math.max(button.clientWidth, button.clientHeight);
+                const radius = diameter / 2;
+
+                circle.style.width = circle.style.height = `${diameter}px`;
+                // Get position of click relative to the button
+                const rect = button.getBoundingClientRect();
+                circle.style.left = `${event.clientX - rect.left - radius}px`;
+                circle.style.top = `${event.clientY - rect.top - radius}px`;
+                circle.classList.add("ripple");
+
+                button.appendChild(circle);
+            }
+
+            const buttonsAndCards = document.querySelectorAll('.cta-button, .tool-card');
+            buttonsAndCards.forEach(item => {
+                item.addEventListener('click', createRipple);
+            });
+
+        });
+    </script>
+
+</body>
+</html>
