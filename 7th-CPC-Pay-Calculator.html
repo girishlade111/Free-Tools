@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern 7th CPC Pay Calculator</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #1abc9c;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .calculator {
+            background-color: white;
+            padding: 25px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .form-group label {
+            flex: 0 0 200px;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .results {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .results-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 15px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            margin: -25px -25px 20px -25px;
+            text-align: center;
+        }
+        
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .result-table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        
+        .result-table th, .result-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-table th {
+            font-weight: 500;
+        }
+        
+        .result-table td {
+            font-weight: 400;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            border-top: 2px solid #ddd;
+            background-color: #f0f0f0 !important;
+        }
+        
+        .info-section {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 30px;
+        }
+        
+        .info-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        .info-section p {
+            margin-bottom: 10px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            width: 16px;
+            height: 16px;
+            background-color: #ddd;
+            color: #555;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body, .container, .results {
+                background-color: white;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .results {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-group label {
+                flex: 0 0 100%;
+                margin-bottom: 5px;
+            }
+            
+            .form-control {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>7th CPC Pay Calculator</h1>
+            <p>Calculate your salary as per 7th Central Pay Commission recommendations</p>
+        </div>
+        
+        <div class="calculator no-print">
+            <div class="form-group">
+                <label for="payLevel">Pay Level</label>
+                <select id="payLevel" class="form-control" onchange="updateBasicPay()">
+                    <option value="">Select Pay Level</option>
+                    <option value="1">Level 1 (18000-56900)</option>
+                    <option value="2">Level 2 (19900-63200)</option>
+                    <option value="3">Level 3 (21700-69100)</option>
+                    <option value="4">Level 4 (25500-81100)</option>
+                    <option value="5">Level 5 (29200-92300)</option>
+                    <option value="6">Level 6 (35400-112400)</option>
+                    <option value="7">Level 7 (44900-142400)</option>
+                    <option value="8">Level 8 (47600-151100)</option>
+                    <option value="9">Level 9 (53100-167800)</option>
+                    <option value="10">Level 10 (56100-177500)</option>
+                    <option value="11">Level 11 (67700-208700)</option>
+                    <option value="12">Level 12 (78800-209200)</option>
+                    <option value="13">Level 13 (123100-215900)</option>
+                    <option value="14">Level 14 (144200-218200)</option>
+                    <option value="15">Level 15 (182200-224100)</option>
+                    <option value="16">Level 16 (205400-224400)</option>
+                    <option value="17">Level 17 (225000)</option>
+                    <option value="18">Level 18 (250000)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="basicPay">Basic Pay</label>
+                <input type="number" id="basicPay" class="form-control" placeholder="Enter your basic pay">
+                <span class="tooltip">i
+                    <span class="tooltip-text">Basic Pay is the fixed amount paid to an employee before any additional amounts such as allowances and other benefits.</span>
+                </span>
+            </div>
+            
+            <div class="form-group">
+                <label for="hraCity">HRA Category</label>
+                <select id="hraCity" class="form-control">
+                    <option value="X">X City (24%)</option>
+                    <option value="Y">Y City (16%)</option>
+                    <option value="Z">Z City (8%)</option>
+                </select>
+                <span class="tooltip">i
+                    <span class="tooltip-text">X Cities: Cities with population > 50 lakhs<br>Y Cities: Cities with population 5-50 lakhs<br>Z Cities: Other cities</span>
+                </span>
+            </div>
+            
+            <div class="form-group">
+                <label for="daPercentage">DA Percentage</label>
+                <input type="number" id="daPercentage" class="form-control" value="46" placeholder="Current DA rate">
+                <span class="tooltip">i
+                    <span class="tooltip-text">Dearness Allowance (DA) is a cost of living adjustment allowance paid to government employees. The current DA rate is 46% (as of July 2024).</span>
+                </span>
+            </div>
+            
+            <div class="form-group">
+                <label for="taCity">TA Category</label>
+                <select id="taCity" class="form-control">
+                    <option value="A1A">A1/A Cities</option>
+                    <option value="Other">Other Cities</option>
+                </select>
+                <span class="tooltip">i
+                    <span class="tooltip-text">Transport Allowance varies based on city classification.</span>
+                </span>
+            </div>
+            
+            <div class="btn-group">
+                <button id="calculateBtn" class="btn btn-primary">Calculate Salary</button>
+                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                <button id="printBtn" class="btn btn-secondary">Print/Save PDF</button>
+            </div>
+        </div>
+        
+        <div class="results" id="resultsSection">
+            <div class="results-header">
+                <h2>7th CPC Salary Calculation Results</h2>
+            </div>
+            
+            <table class="result-table">
+                <tr>
+                    <th>Component</th>
+                    <th>Amount (₹)</th>
+                </tr>
+                <tr>
+                    <td>Pay Level</td>
+                    <td id="resultPayLevel">-</td>
+                </tr>
+                <tr>
+                    <td>Basic Pay</td>
+                    <td id="resultBasicPay">-</td>
+                </tr>
+                <tr>
+                    <td>Dearness Allowance (DA)</td>
+                    <td id="resultDA">-</td>
+                </tr>
+                <tr>
+                    <td>House Rent Allowance (HRA)</td>
+                    <td id="resultHRA">-</td>
+                </tr>
+                <tr>
+                    <td>Transport Allowance (TA)</td>
+                    <td id="resultTA">-</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Total Salary</td>
+                    <td id="resultTotal">-</td>
+                </tr>
+            </table>
+            
+            <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #777;">
+                <p>Calculation as per 7th CPC recommendations with DA at <span id="resultDAPercent">46</span>%</p>
+                <p>Generated on <span id="generatedDate"></span></p>
+            </div>
+        </div>
+        
+        <div class="info-section no-print">
+            <h2>About 7th CPC Pay Structure</h2>
+            <p>The 7th Central Pay Commission (CPC) was constituted by the Government of India to review and revise the pay scales of central government employees. The recommendations were implemented with effect from January 1, 2016.</p>
+            
+            <h3 style="margin-top: 15px; color: var(--secondary-color);">Key Features:</h3>
+            <p>1. <strong>Pay Matrix:</strong> Replaced the Grade Pay system with a matrix structure consisting of 18 levels.</p>
+            <p>2. <strong>Basic Pay:</strong> Determined by the employee's position in the pay matrix based on level and cell.</p>
+            <p>3. <strong>Dearness Allowance (DA):</strong> Compensates for inflation and is revised semi-annually.</p>
+            <p>4. <strong>House Rent Allowance (HRA):</strong> Varies based on city classification (X: 24%, Y: 16%, Z: 8% of Basic Pay).</p>
+            <p>5. <strong>Transport Allowance (TA):</strong> Fixed amount based on pay level and city category.</p>
+            
+            <h3 style="margin-top: 15px; color: var(--secondary-color);">How to Use This Calculator:</h3>
+            <p>1. Select your Pay Level from the dropdown</p>
+            <p>2. Enter your Basic Pay amount</p>
+            <p>3. Choose HRA category based on your city</p>
+            <p>4. Verify the DA percentage (updated as per latest rates)</p>
+            <p>5. Select TA category based on your city</p>
+            <p>6. Click "Calculate Salary" to view your complete salary breakdown</p>
+            <p>7. Use the "Print/Save PDF" button to save or print your results</p>
+        </div>
+    </div>
+
+    <script>
+        // Pay matrix data (simplified for each level's starting pay)
+        const payMatrix = {
+            1: 18000,
+            2: 19900,
+            3: 21700,
+            4: 25500,
+            5: 29200,
+            6: 35400,
+            7: 44900,
+            8: 47600,
+            9: 53100,
+            10: 56100,
+            11: 67700,
+            12: 78800,
+            13: 123100,
+            14: 144200,
+            15: 182200,
+            16: 205400,
+            17: 225000,
+            18: 250000
+        };
+        
+        // Transport Allowance rates
+        const taRates = {
+            A1A: {
+                high: 7200,  // Level 9 and above
+                mid: 3600,   // Level 3 to 8
+                low: 1350    // Level 1 and 2
+            },
+            Other: {
+                high: 3600,  // Level 9 and above
+                mid: 1800,   // Level 3 to 8
+                low: 900     // Level 1 and 2
+            }
+        };
+        
+        // Update basic pay based on selected pay level
+        function updateBasicPay() {
+            const payLevel = document.getElementById('payLevel').value;
+            if (payLevel) {
+                document.getElementById('basicPay').value = payMatrix[payLevel];
+            }
+        }
+        
+        // Calculate TA based on pay level and city
+        function calculateTA(payLevel, cityType) {
+            const level = parseInt(payLevel);
+            if (level >= 9) {
+                return taRates[cityType].high;
+            } else if (level >= 3) {
+                return taRates[cityType].mid;
+            } else {
+                return taRates[cityType].low;
+            }
+        }
+        
+        // Calculate salary
+        function calculateSalary() {
+            // Get input values
+            const payLevel = document.getElementById('payLevel').value;
+            const basicPay = parseFloat(document.getElementById('basicPay').value);
+            const hraCity = document.getElementById('hraCity').value;
+            const daPercentage = parseFloat(document.getElementById('daPercentage').value);
+            const taCity = document.getElementById('taCity').value;
+            
+            // Validate inputs
+            if (!payLevel || isNaN(basicPay) || basicPay <= 0) {
+                alert('Please select a Pay Level and enter a valid Basic Pay amount.');
+                return;
+            }
+            
+            // Calculate components
+            const da = basicPay * (daPercentage / 100);
+            
+            let hraRate;
+            switch (hraCity) {
+                case 'X':
+                    hraRate = 0.24;
+                    break;
+                case 'Y':
+                    hraRate = 0.16;
+                    break;
+                case 'Z':
+                    hraRate = 0.08;
+                    break;
+                default:
+                    hraRate = 0.08;
+            }
+            
+            const hra = basicPay * hraRate;
+            const ta = calculateTA(payLevel, taCity);
+            const totalSalary = basicPay + da + hra + ta;
+            
+            // Display results
+            document.getElementById('resultPayLevel').textContent = "Level " + payLevel;
+            document.getElementById('resultBasicPay').textContent = basicPay.toLocaleString('en-IN');
+            document.getElementById('resultDA').textContent = Math.round(da).toLocaleString('en-IN');
+            document.getElementById('resultHRA').textContent = Math.round(hra).toLocaleString('en-IN');
+            document.getElementById('resultTA').textContent = ta.toLocaleString('en-IN');
+            document.getElementById('resultTotal').textContent = Math.round(totalSalary).toLocaleString('en-IN');
+            document.getElementById('resultDAPercent').textContent = daPercentage;
+            
+            // Show results section
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Set generated date
+            const now = new Date();
+            document.getElementById('generatedDate').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN');
+        }
+        
+        // Reset form
+        function resetForm() {
+            document.getElementById('payLevel').value = '';
+            document.getElementById('basicPay').value = '';
+            document.getElementById('hraCity').value = 'X';
+            document.getElementById('daPercentage').value = '46';
+            document.getElementById('taCity').value = 'A1A';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+        
+        // Print results
+        function printResults() {
+            if (document.getElementById('resultsSection').style.display === 'none') {
+                alert('Please calculate salary first before printing.');
+                return;
+            }
+            window.print();
+        }
+        
+        // Add event listeners
+        document.getElementById('calculateBtn').addEventListener('click', calculateSalary);
+        document.getElementById('resetBtn').addEventListener('click', resetForm);
+        document.getElementById('printBtn').addEventListener('click', printResults);
+        
+        // Initialize current date for DA information
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the calculated date
+            const now = new Date();
+            document.getElementById('generatedDate').textContent = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN');
+        });
+    </script>
+</body>
+</html>
