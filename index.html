@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Girish's Tool - Your Ultimate Digital Toolkit</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Reset and Basic Styles */
@@ -23,18 +22,144 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: #e0e0e0;
-            background-color: #12121f; /* Deep dark blue/purple */
+            background-color: var(--dark-bg); /* Base background color */
             overflow-x: hidden;
-            position: relative;
+            position: relative; /* Needed for z-indexing of fixed background elements */
         }
 
-        .container {
+        /* Eye-Catchy Colors & Background Variables */
+        :root {
+            --primary-glow: #00f2ff;
+            --secondary-glow: #ff00c8;
+            --accent-glow: #aeff00;
+            --dark-bg: #12121f;
+            --card-bg: rgba(25, 25, 45, 0.8);
+            --text-light: #f0f5f9;
+            --text-medium: #c9d6df;
+
+            /* RGB versions for rgba() */
+            --primary-glow-rgb: 0, 242, 255;
+            --secondary-glow-rgb: 255, 0, 200;
+            --accent-glow-rgb: 174, 255, 0;
+
+            /* Transparent versions for gradients */
+            --primary-glow-transparent: rgba(var(--primary-glow-rgb), 0.3);
+            --secondary-glow-transparent: rgba(var(--secondary-glow-rgb), 0.3);
+            --accent-glow-transparent: rgba(var(--accent-glow-rgb), 0.2);
+        }
+
+
+        /* --- Animated Background Elements --- */
+        #global-animated-gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                -45deg,
+                var(--dark-bg) 20%,
+                var(--primary-glow-transparent) 40%,
+                var(--secondary-glow-transparent) 60%,
+                var(--dark-bg) 80%
+            );
+            background-size: 400% 400%;
+            animation: gradientFlow 25s ease infinite;
+            z-index: -2; /* Behind everything, including floating shapes */
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #floating-shapes-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Keep shapes contained */
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: -1; /* Above gradient, but behind content */
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0; /* Start invisible, animate in */
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .floating-shape.s1 { /* Example: Large, slow circle */
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, var(--primary-glow-transparent) 0%, rgba(var(--primary-glow-rgb), 0) 70%);
+            left: 10%; bottom: -200px; /* Start off-screen */
+            animation-name: floatUp, fadeInOut;
+            animation-duration: 25s, 25s;
+            animation-delay: 0s, 0s;
+        }
+        .floating-shape.s2 { /* Example: Medium, different speed circle */
+            width: 120px; height: 120px;
+            background: radial-gradient(circle, var(--secondary-glow-transparent) 0%, rgba(var(--secondary-glow-rgb), 0) 70%);
+            left: 70%; bottom: -120px;
+            animation-name: floatUp, fadeInOut;
+            animation-duration: 30s, 30s;
+            animation-delay: 5s, 5s; /* Staggered start */
+        }
+        .floating-shape.s3 { /* Example: Small, faster, different path */
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, var(--accent-glow-transparent) 0%, rgba(var(--accent-glow-rgb), 0) 70%);
+            left: 40%; bottom: -60px;
+            animation-name: floatDiagonal, fadeInOut, rotateShape;
+            animation-duration: 20s, 20s, 15s;
+            animation-delay: 2s, 2s, 0s;
+             border-radius: 15%; /* Make it a squarish shape */
+        }
+         .floating-shape.s4 { /* Example: Another small one */
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, var(--primary-glow-transparent) 0%, rgba(var(--primary-glow-rgb), 0) 60%);
+            left: 85%; bottom: -80px;
+            animation-name: floatUp, fadeInOut;
+            animation-duration: 22s, 22s;
+            animation-delay: 8s, 8s;
+        }
+
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-120vh); opacity: 0; } /* Move well above viewport */
+        }
+        @keyframes floatDiagonal {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translate(-30vw, -120vh) rotate(180deg); opacity: 0; }
+        }
+        @keyframes fadeInOut { /* Simplified if floatUp handles opacity */
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 0.8; } /* Max opacity */
+            50% { opacity: 0.4; } /* Dip in middle */
+        }
+         @keyframes rotateShape {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- End Animated Background Elements --- */
+
+
+        .container { /* Ensure containers are above background elements */
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Above floating shapes and gradient */
         }
 
         /* Particle Canvas Styling for Hero */
@@ -44,23 +169,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            z-index: 0; /* Within hero, behind hero content */
         }
 
-        /* Eye-Catchy Colors */
-        :root {
-            --primary-glow: #00f2ff; /* Electric Blue */
-            --secondary-glow: #ff00c8; /* Vibrant Pink */
-            --accent-glow: #aeff00; /* Neon Green/Yellow */
-            --dark-bg: #12121f;
-            --card-bg: rgba(25, 25, 45, 0.8);
-            --text-light: #f0f5f9;
-            --text-medium: #c9d6df;
-            /* RGB versions for rgba() */
-            --primary-glow-rgb: 0, 242, 255;
-            --secondary-glow-rgb: 255, 0, 200;
-            --accent-glow-rgb: 174, 255, 0;
-        }
 
         /* Header */
         header {
@@ -71,7 +182,7 @@
             box-shadow: 0 2px 10px rgba(var(--primary-glow-rgb), 0.1);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1000; /* Highest, always on top */
             border-bottom: 1px solid rgba(var(--primary-glow-rgb), 0.2);
         }
 
@@ -79,6 +190,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            /* .container z-index is already 2, header itself is 1000 */
         }
 
         .logo {
@@ -99,7 +211,7 @@
 
         /* Hero Section */
         #hero {
-            position: relative;
+            position: relative; /* For particles and z-indexing context */
             color: var(--text-light);
             padding: 100px 0;
             text-align: center;
@@ -108,12 +220,15 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            background: var(--dark-bg);
+            overflow: hidden; /* For particles */
+            /* No background here, will show through global animated BG */
         }
 
-        #hero .container {
-             position: relative; z-index: 1;
+        #hero .container { /* Hero content container */
+             position: relative;
+             z-index: 1; /* Above hero-particles-js but below global .container's z-index if nested, careful */
+                         /* Actually, this .container is a child of #hero. The main page .container has z-index 2. */
+                         /* This specific .container for hero content should be > #hero-particles-js (0) */
         }
 
         #hero h1 {
@@ -183,9 +298,13 @@
         /* Tools Grid Section */
         #tools-grid {
             padding: 70px 0;
-            position: relative;
-            z-index: 1;
+            position: relative; /* For z-index context relative to its .container child */
+            /* z-index: 1; // Not needed if its child .container handles z-index properly */
         }
+        #tools-grid .container {
+            /* Already has z-index: 2 from global .container style */
+        }
+
 
         #tools-grid h2 {
             text-align: center;
@@ -214,28 +333,28 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             display: flex;
-            flex-direction: column; /* Changed to column for icon on top */
-            align-items: center; /* Center icon and text */
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            min-height: 160px; /* Increased min-height for icon */
+            min-height: 160px;
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(3px);
         }
 
         .tool-card .tool-icon {
-            font-size: 2.5em; /* Icon size */
+            font-size: 2.5em;
             margin-bottom: 15px;
-            color: var(--primary-glow); /* Default icon color */
+            color: var(--primary-glow);
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .tool-card h3 {
-            font-size: 1.15em; /* Adjusted size for better balance with icon */
+            font-size: 1.15em;
             color: var(--text-light);
             font-weight: 600;
             transition: color 0.3s ease, text-shadow 0.3s ease;
-            margin-top: 0; /* Remove default margin if any */
+            margin-top: 0;
         }
 
         .tool-card::before, .tool-card::after {
@@ -257,7 +376,7 @@
         }
         .tool-card:hover .tool-icon {
             color: var(--accent-glow);
-            transform: scale(1.1) rotate(-5deg); /* Funky icon hover */
+            transform: scale(1.1) rotate(-5deg);
         }
         .tool-card:hover h3 {
             color: var(--accent-glow);
@@ -275,25 +394,31 @@
             padding: 25px 0;
             margin-top: 40px;
             border-top: 1px solid rgba(var(--primary-glow-rgb), 0.2);
-            position: relative;
-            z-index: 1;
+            position: relative; /* For z-index context of its .container */
+            /* z-index: 1; // Not needed if its child .container handles z-index */
+        }
+        footer .container {
+            /* Already has z-index: 2 from global .container style */
         }
         footer p { font-weight: 300; }
 
-        /* Responsive Adjustments */
+        /* Responsive Adjustments (rest are same) */
         @media (max-width: 992px) {
             #hero h1 { font-size: 2.8em; }
             .tools-container { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
             .tool-card .tool-icon { font-size: 2.2em; margin-bottom: 12px; }
             .tool-card h3 { font-size: 1.1em; }
+            .floating-shape.s1 { width: 150px; height: 150px; }
+            .floating-shape.s2 { width: 90px; height: 90px; }
         }
-
-        @media (max-width: 768px) {
+        /* ... other media queries ... */
+         @media (max-width: 768px) {
             #hero h1 { font-size: 2.4em; }
             #hero p { font-size: 1.15em; }
             .logo { font-size: 1.8em; }
             #tools-grid h2 { font-size: 2.2em; }
             .tool-card .tool-icon { font-size: 2em; }
+            #floating-shapes-container { display: none; } /* Optionally hide on very small screens for performance */
         }
 
         @media (max-width: 480px) {
@@ -309,9 +434,20 @@
             .tool-card .tool-icon { font-size: 1.8em; margin-bottom: 10px; }
             .tool-card h3 { font-size: 1em; }
         }
+
     </style>
 </head>
 <body>
+    <!-- Global Animated Background Elements -->
+    <div id="global-animated-gradient-bg"></div>
+    <div id="floating-shapes-container">
+        <div class="floating-shape s1"></div>
+        <div class="floating-shape s2"></div>
+        <div class="floating-shape s3"></div>
+        <div class="floating-shape s4"></div>
+        <!-- Add more shapes if desired -->
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -321,8 +457,8 @@
 
     <!-- Hero Section -->
     <section id="hero">
-        <div id="hero-particles-js"></div>
-        <div class="container">
+        <div id="hero-particles-js"></div> <!-- Hero specific particles -->
+        <div class="container"> <!-- Hero content container -->
             <h1>Girish's Tool: Your Ultimate Digital Toolkit</h1>
             <p>Simplify your tasks with Girish's Online Utilities. Fast, funky, and free to use!</p>
             <a href="#tools-grid" class="cta-button" id="explore-tools-btn">Explore Tools</a>
@@ -331,7 +467,7 @@
 
     <!-- Tools Grid Section -->
     <section id="tools-grid">
-        <div class="container">
+        <div class="container"> <!-- Tools content container -->
             <h2>Our Awesome Tools</h2>
             <div class="tools-container">
                 <!-- Tool items will be dynamically inserted here -->
@@ -341,15 +477,14 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>© <span id="current-year"></span> Girish's Tool. All rights reserved. Stay Funky!</p>
+        <div class="container"> <!-- Footer content container -->
+            <p>&copy; <span id="current-year"></span> Girish's Tool. All rights reserved. Stay Funky!</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        // No need for hexToRgb as RGB values are directly in CSS vars now.
-
+        // JavaScript remains largely the same for core functionality
         document.addEventListener('DOMContentLoaded', function() {
             const exploreButton = document.getElementById('explore-tools-btn');
             const toolsSection = document.getElementById('tools-grid');
@@ -363,7 +498,6 @@
             const yearSpan = document.getElementById('current-year');
             if (yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
-            // Tool data with Font Awesome icons
             const tools = [
                 { name: 'Loan EMI Calculator', href: 'Loan-EMI-Calculator.html', icon: 'fas fa-calculator' },
                 { name: 'Video Transcript Generator', href: 'Video-Transcript-Generator.html', icon: 'fas fa-closed-captioning' },
@@ -372,7 +506,7 @@
                 { name: 'MS Plate Weight Calculator', href: 'MS-Plate-Weight-Calculator.html', icon: 'fas fa-weight-hanging' },
                 { name: 'LIC Surrender Value Calculator', href: 'LIC-Surrender-Value-Calculator.html', icon: 'fas fa-hand-holding-usd' },
                 { name: 'SGPA Calculator', href: 'sgpa-calculator.html', icon: 'fas fa-graduation-cap' },
-                { name: 'Lo Shu Grid Calculator', href: 'lo-shu-grid-calculator.html', icon: 'fas fa-th' }, // Generic grid
+                { name: 'Lo Shu Grid Calculator', href: 'lo-shu-grid-calculator.html', icon: 'fas fa-th' },
                 { name: 'VIT CGPA Calculator', href: 'vit-cgpa-calculator.html', icon: 'fas fa-university' },
                 { name: 'SRM CGPA Calculator', href: 'srm-cgpa-calculator.html', icon: 'fas fa-school' },
                 { name: 'SRM GPA Calculator', href: 'srm-gpa-calculator.html', icon: 'fas fa-book-reader' },
@@ -393,42 +527,24 @@
                     const toolCard = document.createElement('a');
                     toolCard.href = tool.href;
                     toolCard.classList.add('tool-card');
-                    
-                    // Create and add icon
                     if (tool.icon) {
                         const iconElement = document.createElement('i');
-                        iconElement.className = `tool-icon ${tool.icon}`; // Add base class and specific icon class
+                        iconElement.className = `tool-icon ${tool.icon}`;
                         toolCard.appendChild(iconElement);
                     }
-
                     const toolName = document.createElement('h3');
                     toolName.textContent = tool.name;
-                    
                     toolCard.appendChild(toolName);
                     toolsContainer.appendChild(toolCard);
                 });
             }
 
+            // Hero Particles.js initialization
             if (document.getElementById('hero-particles-js') && typeof particlesJS !== 'undefined') {
-                particlesJS('hero-particles-js', {
-                    "particles": {
-                        "number": {"value": 80, "density": {"enable": true, "value_area": 800}},
-                        "color": {"value": ["#00f2ff", "#ff00c8", "#aeff00"]},
-                        "shape": {"type": "circle"},
-                        "opacity": {"value": 0.6, "random": true, "anim": {"enable": true, "speed": 0.8, "opacity_min": 0.2, "sync": false}},
-                        "size": {"value": 3, "random": true},
-                        "line_linked": {"enable": true, "distance": 120, "color": "#ffffff", "opacity": 0.25, "width": 1},
-                        "move": {"enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out"}
-                    },
-                    "interactivity": {
-                        "detect_on": "canvas",
-                        "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "push"}, "resize": true},
-                        "modes": {
-                            "grab": {"distance": 140, "line_linked": {"opacity": 0.7}},
-                            "push": {"particles_nb": 4}
-                        }
-                    },
-                    "retina_detect": true
+                particlesJS('hero-particles-js', { /* ... existing particles.js config ... */
+                    "particles": {"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":["#00f2ff","#ff00c8","#aeff00"]},"shape":{"type":"circle"},"opacity":{"value":0.6,"random":true,"anim":{"enable":true,"speed":0.8,"opacity_min":0.2,"sync":false}},"size":{"value":3,"random":true},"line_linked":{"enable":true,"distance":120,"color":"#ffffff","opacity":0.25,"width":1},"move":{"enable":true,"speed":2,"direction":"none","random":true,"straight":false,"out_mode":"out"}},
+                    "interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"grab"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":140,"line_linked":{"opacity":0.7}},"push":{"particles_nb":4}}},
+                    "retina_detect":true
                 });
             } else {
                 console.warn("Particles.js library not loaded or hero-particles-js element not found.");
